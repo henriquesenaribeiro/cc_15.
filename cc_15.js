@@ -153,3 +153,61 @@ addRiskItem("Employee Retention", "Low", "HR"); // Should initially be "Low"
 addRiskItem("Market Fluctuations", "Medium", "Finance"); // Should initially be "Medium"
 
 // Clicking the "Increase Risk Levels" button should change the levels
+
+// Task 6 - Risk Dashboard Filtering
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Add a risk item for testing
+    addRiskItem("Data Breach", "High", "IT");
+    addRiskItem("Supply Chain Disruption", "Medium", "Operations");
+
+    // Prevent the whole dashboard from removing cards accidentally
+    const riskDashboard = document.getElementById("riskDashboard");
+    riskDashboard.addEventListener("click", (e) => {
+        console.log("Dashboard clicked");
+    });
+});
+
+function addRiskItem(riskName, riskLevel, department) {
+    const riskCard = document.createElement("div");
+    riskCard.classList.add("riskCard");
+
+    // Set background color based on the risk level (from Task 4)
+    switch (riskLevel) {
+        case "Low":
+            riskCard.style.backgroundColor = "green";
+            break;
+        case "Medium":
+            riskCard.style.backgroundColor = "yellow";
+            break;
+        case "High":
+            riskCard.style.backgroundColor = "red";
+            break;
+        default:
+            riskCard.style.backgroundColor = "white"; // default fallback
+    }
+
+    // Populate the risk card with details
+    riskCard.innerHTML = `
+        <h3>${riskName}</h3>
+        <p>Risk Level: ${riskLevel}</p>
+        <p>Department: ${department}</p>
+        <button class="resolveBtn">Resolve</button>
+    `;
+
+    // Append the risk card to the risk dashboard
+    const riskDashboard = document.getElementById("riskDashboard");
+    riskDashboard.appendChild(riskCard);
+
+    // Stop propagation if someone clicks anywhere inside the card
+    riskCard.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent triggering the parent dashboard's click event
+    });
+
+    // Resolve button click event (to remove the card)
+    const resolveButton = riskCard.querySelector(".resolveBtn");
+    resolveButton.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevents the resolve button click from triggering the card click event
+        riskCard.remove(); // Remove the risk card
+    });
+}
