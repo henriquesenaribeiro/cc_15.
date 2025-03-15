@@ -101,3 +101,55 @@ function addRiskItem(riskName, riskLevel, department) {
 // Test Cases
 addRiskItem("Cybersecurity Threat", "High", "IT"); // Should appear in red
 addRiskItem("HR Compliance Issue", "Low", "Human Resources"); // Should appear in green
+
+// Task 5 - Bulk Risk Updates
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Create the "Increase Risk Levels" button
+    const increaseButton = document.createElement("button");
+    increaseButton.textContent = "Increase Risk Levels";
+    increaseButton.addEventListener("click", increaseRiskLevels);
+
+    // Append the button to the dashboard
+    const riskDashboard = document.getElementById("riskDashboard");
+    riskDashboard.appendChild(increaseButton);
+});
+
+// Function to increase risk levels
+function increaseRiskLevels() {
+    // Get all risk cards
+    const riskCards = document.querySelectorAll(".riskCard");
+
+    // Loop through each risk card and update the risk level
+    riskCards.forEach((card) => {
+        const riskLevelElement = card.querySelector("p:nth-of-type(1)");
+        const riskLevelText = riskLevelElement.textContent.replace("Risk Level: ", "");
+
+        // Update risk level
+        let newRiskLevel;
+        switch (riskLevelText) {
+            case "Low":
+                newRiskLevel = "Medium";
+                card.style.backgroundColor = "yellow"; // Update background color
+                break;
+            case "Medium":
+                newRiskLevel = "High";
+                card.style.backgroundColor = "red"; // Update background color
+                break;
+            case "High":
+                newRiskLevel = "High"; // No change
+                break;
+            default:
+                newRiskLevel = riskLevelText; // Default to current value if something goes wrong
+        }
+
+        // Update the text of the risk level
+        riskLevelElement.textContent = Risk Level: ${newRiskLevel};
+    });
+}
+
+// Test Cases for Task 5
+addRiskItem("Employee Retention", "Low", "HR"); // Should initially be "Low"
+addRiskItem("Market Fluctuations", "Medium", "Finance"); // Should initially be "Medium"
+
+// Clicking the "Increase Risk Levels" button should change the levels
